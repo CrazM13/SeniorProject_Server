@@ -1,0 +1,16 @@
+{
+  "name": "class_seniorproject_node",
+  "version": "1.0.0",
+  "description": "Senior Project Persistence",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joseph Sepulveda",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "mongoose": "^5.4.20",
+    "socket.io": "^2.2.0"
+  }
+}
