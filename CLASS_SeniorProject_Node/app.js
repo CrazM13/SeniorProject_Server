@@ -36,6 +36,16 @@ io.on('connection', (socket) => {
 		});
 	});
 	
+	socket.on('updateDeathCount', (data) => {
+		console.log("updateDeathCount", JSON.stringify(data, null, 4));
+
+		User.findOne({ name: data.user }).then((user) => {
+			user.deathCount = data.deathCount;
+
+			user.save();
+		});
+	});
+	
 	socket.on('updateBestTime', (data) => {
 		console.log("updateBestTime", JSON.stringify(data, null, 4));
 		
@@ -94,6 +104,7 @@ io.on('connection', (socket) => {
 					name: user,
 					password: "",
 					score: 0,
+					deathCount: 0,
 					levels: []
 				}
 				

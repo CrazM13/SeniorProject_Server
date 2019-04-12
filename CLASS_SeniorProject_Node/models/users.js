@@ -15,6 +15,11 @@ var UserSchema = new Schema({
 		type: Number,
 		required: true
 	},
+	deathCount: {
+		type: Number,
+		required: true,
+		default: 0
+	},
 	levels: [
 		{
 			type: Number,
