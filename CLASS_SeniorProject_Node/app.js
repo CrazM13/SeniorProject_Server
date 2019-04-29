@@ -14,8 +14,23 @@ mongoose.connect(db.mongoURI, {
 require('./models/users');
 var User = mongoose.model('Users');
 
+var leaderboard = {levels: []};
+
 io.on('connection', (socket) => {
 	
+	User.findOne({name: "tmpTestUser"}).then((defaultUser) => {
+		if (!defaultUser) {
+			var newUser = {
+				name: "tmpTestUser",
+				password: "nilnull",
+				score: 0,
+				deathCount: 0,
+				levels: []
+			}
+			new User(newUser).save();
+		}
+	});
+
 	socket.emit('connected');
 	
 	socket.on('requestData', (data) => {
@@ -122,4 +137,35 @@ io.on('connection', (socket) => {
 		});
 	});
 	
+	socket.on("getHighScores", (data) => {
+
+		User.findOne({name: data.user}).then((user) => {
+
+			var promises = [];
+
+			for (var i = 0; i < user.levels.length; i++) {
+				promises.push(GetLevelLeaderData(i, user));
+			}
+
+			Promise.all(promises).then(() => {
+				console.log(JSON.stringify(leaderboard, null, 4));
+			});
+			
+		});
+	});
+
 });
+
+async function GetLevelLeaderData(level, user) {
+	leaderboard.levels[level] = {};
+
+	return User.find({'levels.': { $ne: null }}).sort('-levels[' + level + ']').then((users) => {
+
+		leaderboard.levels[level].topBestTime = users[0].levels[level];
+		leaderboard.levels[level].topUser = users[0].name;
+
+		
+		leaderboard.levels[level].userBestTime = user.levels[level];
+
+	});
+}
