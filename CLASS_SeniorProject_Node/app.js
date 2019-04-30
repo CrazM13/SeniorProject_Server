@@ -3,6 +3,19 @@ const bcrypt = require('bcryptjs');
 const io = require('socket.io')(process.env.PORT || 5000);
 const db = require('./config/database');
 
+const bodyParser = require('body-parser');
+const express = require('express');
+const exphbs = require('express-handlebars');
+const passport = require('passport');
+
+const app = express();
+const port = process.env.PORT || 1222;
+
+app.engine('handlebars', exphbs({
+	defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
+
 mongoose.connect(db.mongoURI, {
 	useNewUrlParser: true
 }).then(() => {
@@ -169,6 +182,11 @@ async function getLevelLeaderData(level, user) {
 			}
 		}
 
+		if (leaderboard.levels[level].topUser == undefined) {
+			leaderboard.levels[level].topBestTime = formatTime(-1);
+			leaderboard.levels[level].topUser = "...";
+		}
+
 		leaderboard.levels[level].userBestTime = formatTime(user.levels[level]);
 
 	});
@@ -188,3 +206,12 @@ function formatTime(timeFloat) {
 
 	return "" + (min > 9 ? min : "0" + min) + ":" + (sec > 9 ? sec : "0" + sec) + "." + (dec > 9 ? dec : "0" + dec);
 }
+
+app.use(express.static(__dirname + "/views"));
+app.use(express.static(__dirname + "/public"));
+
+app.use('/', require('./routes/router'));
+
+app.listen(port, () => {
+	console.log("Server is running on port " + port.toString());
+});

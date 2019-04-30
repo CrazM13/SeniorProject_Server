@@ -1,0 +1,57 @@
+<h1>Leaderboard</h1>
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="card">
+				<div class="card-header">
+					<h3>Level Select</h3>
+				</div>
+
+				<div class="card-body btn-group-vertical">
+					{{#each levels}}
+						<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#level{{@index}}_data" aria-expanded="false" aria-controls="level{{@index}}_data">
+							Level {{@index}}
+						</button>
+					{{else}}
+						<h3>NO LEVELS!?</h3>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+
+		<div class="col accordion" id="level_data">
+			{{#each levels}}
+				<div class="card collapse" id="level{{@index}}_data" data-parent="#level_data">
+					<div class="card-header">
+						<h3>Level {{@index}}</h3>
+					</div>
+
+					<div class="card-body">
+						{{#each users}}
+							<h3>{{name}}: {{time}}</h3>
+						{{else}}
+							<h3>Nobody Has Completed This Level!</h3>
+						{{/each}}
+					</div>
+				</div>
+			{{else}}
+				<h3>NO LEVELS!?</h3>
+			{{/each}}
+			<div class="card collapse" id="level1_data" data-parent="#level_data">
+				<div class="card-header">
+					<h3>Level 1</h3>
+				</div>
+
+				<div class="card-body">
+					<h3>TOP USER</h3>
+					<h4>TOP TIME</h4>
+					<hr />
+					<h3>USER</h3>
+					<h4>BEST TIME</h4>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
