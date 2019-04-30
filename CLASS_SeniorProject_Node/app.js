@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
 			if (user.levels.length > data.level) user.levels[data.level] = data.time;
 			else {
 				for (var i = user.levels.length; i < data.level; i++) {
-					user.levels.push(0);
+					user.levels.push(-1);
 				}
 				user.levels.push(data.time);
 			}
@@ -144,7 +144,7 @@ io.on('connection', (socket) => {
 			var promises = [];
 
 			for (var i = 0; i < user.levels.length; i++) {
-				promises.push(GetLevelLeaderData(i, user));
+				promises.push(getLevelLeaderData(i, user));
 			}
 
 			Promise.all(promises).then(() => {
@@ -156,16 +156,35 @@ io.on('connection', (socket) => {
 
 });
 
-async function GetLevelLeaderData(level, user) {
+async function getLevelLeaderData(level, user) {
 	leaderboard.levels[level] = {};
 
 	return User.find({'levels.': { $ne: null }}).sort('-levels[' + level + ']').then((users) => {
+		for (var i = 0; i < users.length; i++) {
+			if (users[i].levels != undefined && users[i].levels.length > level && users[i].levels[level] >= 0) {
+				leaderboard.levels[level].topBestTime = formatTime(users[i].levels[level]);
+				leaderboard.levels[level].topUser = users[i].name;
 
-		leaderboard.levels[level].topBestTime = users[0].levels[level];
-		leaderboard.levels[level].topUser = users[0].name;
+				break;
+			}
+		}
 
-		
-		leaderboard.levels[level].userBestTime = user.levels[level];
+		leaderboard.levels[level].userBestTime = formatTime(user.levels[level]);
 
 	});
+}
+
+function formatTime(timeFloat) {
+
+	if (timeFloat < 0) return "--:--.--";
+	if (timeFloat > 594000) return "\u221e";
+
+	timeFloat = Math.round(timeFloat * 100);
+
+	var sec = Math.round(timeFloat / 100);
+	var min = Math.round(sec / 60);
+	sec %= 60;
+	var dec = timeFloat % 100;
+
+	return "" + (min > 9 ? min : "0" + min) + ":" + (sec > 9 ? sec : "0" + sec) + "." + (dec > 9 ? dec : "0" + dec);
 }
