@@ -148,7 +148,7 @@ io.on('connection', (socket) => {
 			}
 
 			Promise.all(promises).then(() => {
-				console.log(JSON.stringify(leaderboard, null, 4));
+				socket.emit('recieveHighScores', leaderboard);
 			});
 			
 		});
