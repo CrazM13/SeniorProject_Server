@@ -6,16 +6,50 @@ const db = require('./config/database');
 const bodyParser = require('body-parser');
 const express = require('express');
 const exphbs = require('express-handlebars');
+const session = require('express-session');
 const passport = require('passport');
+const flash = require('connect-flash');
+const favicon = require('serve-favicon');
+
+const helpers = require('./helpers/HelperMethods');
 
 const app = express();
 const port = process.env.PORT || 1222;
 
+// Templating Engine
 app.engine('handlebars', exphbs({
 	defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
 
+// Sessions
+app.use(session({
+	secret: "secret",
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
+
+// Flash
+app.use(flash());
+
+app.use((req, res, next) => {
+	res.locals.success_msg = req.flash('success_msg');
+	res.locals.error_msg = req.flash('error_msg');
+	res.locals.error = req.flash('error');
+	res.locals.user = req.user || null;
+	next();
+});
+
+// Body Parser
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+// Mongoose
 mongoose.connect(db.mongoURI, {
 	useNewUrlParser: true
 }).then(() => {
@@ -175,7 +209,7 @@ async function getLevelLeaderData(level, user) {
 	return User.find({'levels.': { $ne: null }}).sort('-levels[' + level + ']').then((users) => {
 		for (var i = 0; i < users.length; i++) {
 			if (users[i].levels != undefined && users[i].levels.length > level && users[i].levels[level] >= 0) {
-				leaderboard.levels[level].topBestTime = formatTime(users[i].levels[level]);
+				leaderboard.levels[level].topBestTime = helpers.formatTime(users[i].levels[level]);
 				leaderboard.levels[level].topUser = users[i].name;
 
 				break;
@@ -183,32 +217,19 @@ async function getLevelLeaderData(level, user) {
 		}
 
 		if (leaderboard.levels[level].topUser == undefined) {
-			leaderboard.levels[level].topBestTime = formatTime(-1);
+			leaderboard.levels[level].topBestTime = helpers.formatTime(-1);
 			leaderboard.levels[level].topUser = "...";
 		}
 
-		leaderboard.levels[level].userBestTime = formatTime(user.levels[level]);
+		leaderboard.levels[level].userBestTime = helpers.formatTime(user.levels[level]);
 
 	});
 }
 
-function formatTime(timeFloat) {
-
-	if (timeFloat < 0) return "--:--.--";
-	if (timeFloat > 594000) return "\u221e";
-
-	timeFloat = Math.round(timeFloat * 100);
-
-	var sec = Math.round(timeFloat / 100);
-	var min = Math.round(sec / 60);
-	sec %= 60;
-	var dec = timeFloat % 100;
-
-	return "" + (min > 9 ? min : "0" + min) + ":" + (sec > 9 ? sec : "0" + sec) + "." + (dec > 9 ? dec : "0" + dec);
-}
-
 app.use(express.static(__dirname + "/views"));
 app.use(express.static(__dirname + "/public"));
+
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use('/', require('./routes/router'));
 

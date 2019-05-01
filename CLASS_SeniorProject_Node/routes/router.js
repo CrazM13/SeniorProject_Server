@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
+const helpers = require('../helpers/HelperMethods');
+
 require('../models/users');
 var User = mongoose.model('Users');
 
@@ -26,6 +28,8 @@ router.get('/leaderboard', (req, res) => {
     });
 });
 
+router.use('/users', require('./users/router'));
+
 async function getLeaderboardData(level) {
     leaderboard.levels[level] = {};
 
@@ -37,27 +41,12 @@ async function getLeaderboardData(level) {
                 leaderboard.levels[level].users[index] = {};
 
                 leaderboard.levels[level].users[index].name = users[i].name;
-                leaderboard.levels[level].users[index].time = formatTime(users[i].levels[level]);
+                leaderboard.levels[level].users[index].time = helpers.formatTime(users[i].levels[level]);
 
                 index++;
             }
 		}
 	});
-}
-
-function formatTime(timeFloat) {
-
-	if (timeFloat < 0) return "--:--.--";
-	if (timeFloat > 594000) return "\u221e";
-
-	timeFloat = Math.round(timeFloat * 100);
-
-	var sec = Math.round(timeFloat / 100);
-	var min = Math.round(sec / 60);
-	sec %= 60;
-	var dec = timeFloat % 100;
-
-	return "" + (min > 9 ? min : "0" + min) + ":" + (sec > 9 ? sec : "0" + sec) + "." + (dec > 9 ? dec : "0" + dec);
 }
 
 module.exports = router;
