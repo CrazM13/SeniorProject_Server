@@ -9,7 +9,7 @@
 
 				<div class="card-body btn-group-vertical">
 					{{#each levels}}
-						<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#level{{@index}}_data" aria-expanded="false" aria-controls="level{{@index}}_data">
+						<button class="btn btn-primary m-1" type="button" data-toggle="collapse" data-target="#level{{@index}}_data" aria-expanded="false" aria-controls="level{{@index}}_data">
 							Level {{@index}}
 						</button>
 					{{else}}
@@ -28,7 +28,7 @@
 
 					<div class="card-body">
 						{{#each users}}
-							<h3>{{name}}: {{time}}</h3>
+							<h3>{{@index}} - {{name}}: {{time}}</h3>
 						{{else}}
 							<h3>Nobody Has Completed This Level!</h3>
 						{{/each}}
@@ -37,20 +37,6 @@
 			{{else}}
 				<h3>NO LEVELS!?</h3>
 			{{/each}}
-			<div class="card collapse" id="level1_data" data-parent="#level_data">
-				<div class="card-header">
-					<h3>Level 1</h3>
-				</div>
-
-				<div class="card-body">
-					<h3>TOP USER</h3>
-					<h4>TOP TIME</h4>
-					<hr />
-					<h3>USER</h3>
-					<h4>BEST TIME</h4>
-				</div>
-			</div>
-
 		</div>
 
 	</div>
