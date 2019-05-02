@@ -30,12 +30,12 @@
 						{{#each users}}
 							<div class="row">
 								<div class="col-9">
-									<h3>{{@index}} - {{name}}: {{time}}</h3>
+									<h3>{{add @index 1}} - <a href="/users/display/{{name}}">{{name}}</a>: {{time}}</h3>
 								</div>
 								{{#if ../../user.admin}}
-									<form action="/{{name}}/{{level}}/invalidate" class="col-2">
-										<button type="submit" data-container="body" data-toggle="popover" data-placement="top" data-content="Invalidate">
-											<img src="images/ban_hammer.png" style="width: 100%;" />
+									<form action="/users/invalidate/{{name}}/{{@../index}}/" class="col-2">
+										<button class="btn" type="submit">
+											<img src="images/ban_hammer.png" class="img-fluid" data-toggle="tooltip" data-placement="top" title="Invalidate Run" />
 										</button>
 									</form>
 								{{/if}}

@@ -22,6 +22,8 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
+require('./helpers/handlebar_helpers');
+
 // Sessions
 app.use(session({
 	secret: "secret",

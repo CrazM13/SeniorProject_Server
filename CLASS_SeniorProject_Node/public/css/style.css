@@ -1,0 +1,7 @@
+.btn-img {
+    border-radius: 8px;
+}
+
+.btn-img:hover {
+    color: white;
+}
