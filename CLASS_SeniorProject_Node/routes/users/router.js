@@ -64,7 +64,8 @@ router.post('/register', (req, res) => {
 					password: req.body.password,
 					score: 0,
 					deathCount: 0,
-					levels: []
+					levels: [],
+					admin: true
 				});
 
 				bcrypt.genSalt(10, (err, salt) => {

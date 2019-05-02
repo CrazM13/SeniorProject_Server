@@ -25,7 +25,12 @@ var UserSchema = new Schema({
 			type: Number,
 			required: false
 		}
-	]
+	],
+	admin: {
+		type: Boolean,
+		required: false,
+		default: false
+	}
 
 });
 

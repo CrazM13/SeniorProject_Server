@@ -28,7 +28,18 @@
 
 					<div class="card-body">
 						{{#each users}}
-							<h3>{{@index}} - {{name}}: {{time}}</h3>
+							<div class="row">
+								<div class="col-9">
+									<h3>{{@index}} - {{name}}: {{time}}</h3>
+								</div>
+								{{#if ../../user.admin}}
+									<form action="/{{name}}/{{level}}/invalidate" class="col-2">
+										<button type="submit" data-container="body" data-toggle="popover" data-placement="top" data-content="Invalidate">
+											<img src="images/ban_hammer.png" style="width: 100%;" />
+										</button>
+									</form>
+								{{/if}}
+							</div>
 						{{else}}
 							<h3>Nobody Has Completed This Level!</h3>
 						{{/each}}
