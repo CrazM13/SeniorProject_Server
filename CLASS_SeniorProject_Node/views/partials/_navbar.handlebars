@@ -18,6 +18,9 @@
 			
 			{{#if user}}
 				<li class="nav-item">
+					<a class="nav-link" href="/users/edit/{{user.name}}">Edit Profile</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link" href="/users/logout">Log Out</a>
 				</li>
 			{{else}}

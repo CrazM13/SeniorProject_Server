@@ -43,6 +43,22 @@ router.get('/display/:user', (req, res) => {
 	});
 });
 
+router.get('/edit/:user', (req, res) => {
+	User.findOne({ name: req.params.user }).then((user) => {
+
+		var userData = JSON.parse(JSON.stringify(user));
+		var levelsData = [];
+
+		for (var i = 0; i < user.levels.length; i++) {
+			if (user.levels[i] != undefined) levelsData.push({ level: i, time: helpers.formatTime(user.levels[i]) });
+		}
+
+		userData.levels = levelsData;
+
+		res.render('users/edit', userData);
+	});
+});
+
 // Posts
 router.post('/login', (req, res, next) => {
 	passport.authenticate('local', {
@@ -112,6 +128,20 @@ router.post('/register', (req, res) => {
 
 	}
 
+});
+
+router.post('/edit/:user', (req, res) => {
+	User.findOne({name: req.params.user}).then((user) => {
+		
+		user.name = req.body.username;
+		user.profile = req.body.profile_data;
+		
+		console.log(JSON.stringify(user, null, 4));
+		
+		user.save().then((savedUser) => {
+			res.redirect('/users/edit/' + savedUser.name);
+		});
+	});
 });
 
 // Export

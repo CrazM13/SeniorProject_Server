@@ -1,0 +1,70 @@
+<h1>User</h1>
+<form action="/users/edit/{{name}}" method="POST">
+	<div class="container">
+		<div class="row">
+			<div class="col-2">
+				<div class="card" style="width: 128px; height: 128px;">
+					<img id="profile_preview" src="{{profile}}" class="mw-100" alt="Profile Image" />
+					<input type="text" id="profile_data" name="profile_data" class="d-none" />
+				</div>
+				<input type="file" id="profile_input" name="profile" accept="image/*">
+			</div>
+			<div class="col-10">
+				<div class="container" style="height: 128px;">
+					<h2><input type="text" name="username" style="font-size: 300%;" placeholder="{{name}}" value="{{name}}" /></h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<br />
+				<div class="card">
+					<div class="card-header">
+						<h4>Times</h4>
+					</div>
+					<div class="card-body">
+						{{#each levels}}
+						<h3><b>{{level}}</b> -- <b>{{time}}</b></h3>
+						{{else}}
+						<h3>This User Doesn't Have Any Runs!</h3>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<br />
+				<div class="card">
+					<div class="card-header">
+						<h4>Data</h4>
+					</div>
+					<div class="card-body">
+						<div>
+							<h3><b>Deaths --</b> {{deathCount}}</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<button type="submit" class="btn btn-warning">Save Changes</button>
+</form>
+
+<!-- Local Script -->
+<script>
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			
+			reader.onload = (e) => {
+				$('#profile_preview').attr('src', e.target.result);
+				
+				$('#profile_data').attr('value', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	
+	$("#profile_input").change(() => { readURL($("#profile_input")[0]); });
+</script>
