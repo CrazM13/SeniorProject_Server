@@ -8,6 +8,7 @@ const router = express.Router();
 require('../../models/users');
 var User = mongoose.model('Users');
 
+// Routes
 router.get('/login', (req, res) => {
 	res.render('users/login');
 });
@@ -24,6 +25,13 @@ router.get('/logout', function(req, res) {
 	
 });
 
+router.get('/display/:user', (req, res) => {
+	User.findOne({name: req.params.user}).then((user) => {
+		res.render('users/display', user);
+	});
+});
+
+// Posts
 router.post('/login', (req, res, next) => {
 	passport.authenticate('local', {
 		successRedirect: '/',
@@ -94,4 +102,5 @@ router.post('/register', (req, res) => {
 
 });
 
+// Export
 module.exports = router;

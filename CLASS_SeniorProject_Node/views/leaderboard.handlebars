@@ -34,9 +34,7 @@
 								</div>
 								{{#if ../../user.admin}}
 									<form action="/users/invalidate/{{name}}/{{@../index}}/" class="col-2">
-										<button class="btn" type="submit">
-											<img src="images/ban_hammer.png" class="img-fluid" data-toggle="tooltip" data-placement="top" title="Invalidate Run" />
-										</button>
+										<button class="btn-ban" type="submit"  data-toggle="tooltip" data-placement="top" title="Invalidate Run"></button>
 									</form>
 								{{/if}}
 							</div>
