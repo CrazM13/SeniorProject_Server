@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
+const helpers = require('../../helpers/HelperMethods');
+
 require('../../models/users');
 var User = mongoose.model('Users');
 
@@ -27,7 +29,17 @@ router.get('/logout', function(req, res) {
 
 router.get('/display/:user', (req, res) => {
 	User.findOne({name: req.params.user}).then((user) => {
-		res.render('users/display', user);
+		
+		var userData = JSON.parse(JSON.stringify(user));
+		var levelsData = [];
+		
+		for (var i = 0; i < user.levels.length; i++) {
+			if (user.levels[i] != undefined) levelsData.push({ level: i, time: helpers.formatTime(user.levels[i]) });
+		}
+		
+		userData.levels = levelsData;
+		
+		res.render('users/display', userData);
 	});
 });
 

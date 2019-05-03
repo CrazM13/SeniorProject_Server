@@ -1,0 +1,46 @@
+<h1>User</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-2">
+			
+		</div>
+		<div class="col-10">
+			<div class="card">
+				<div class="card-header">
+					<h3>User</h3>
+				</div>
+				<div class="card-body">
+					<h3>{{name}}</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">
+			<div class="card">
+				<div class="card-header">
+					<h4>Times</h4>
+				</div>
+				<div class="card-body">
+					{{#each levels}}
+						<h3><b>{{level}}</b> -- <b>{{time}}</b></h3>
+					{{else}}
+						<h3>This User Doesn't Have Any Runs!</h3>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+		<div class="col-8">
+			<div class="card">
+				<div class="card-header">
+					<h4>Data</h4>
+				</div>
+				<div class="card-body">
+					<div>
+						<h3><b>Deaths --</b> {{deathCount}}</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
