@@ -1,34 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+	
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#prsp_nav" aria-controls="prsp_nav" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	
 	<img src="/images/pixel_raven.png" style="width: 64px; height: 64px;" />
 	<a class="navbar-brand m-2" href="/">Pixel Raven | Senior Project</a>
-
-	<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+	
+	<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2"  id="prsp_nav">
+		<ul class="navbar-nav mr-auto">
 			<li class="nav-item">
 				<a class="nav-link" href="/">Homepage</a>
 			</li>
 
-            <li class="nav-item">
+			<li class="nav-item">
 				<a class="nav-link" href="/leaderboard">Leaderboard</a>
 			</li>
-			
-			{{#if user}}
-				<li class="nav-item">
-					<a class="nav-link" href="/users/edit/{{user.name}}">Edit Profile</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/users/logout">Log Out</a>
-				</li>
-			{{else}}
-				<li class="nav-item">
-					<a class="nav-link" href="/users/login">Log In</a>
-				</li>
-			{{/if}}
 
+			{{#if user}}
+			<li class="nav-item">
+				<a class="nav-link" href="/users/edit/{{user.name}}">Edit Profile</a>
+			</li>
+			{{/if}}
+		</ul>
+	</div>
+	<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+		<ul class="navbar-nav ml-auto">
+			{{#if user}}
+			<li class="nav-item">
+				<a class="nav-link" href="/users/logout">Log Out</a>
+			</li>
+			{{else}}
+			<li class="nav-item">
+				<a class="nav-link" href="/users/login">Log In</a>
+			</li>
+			{{/if}}
 		</ul>
 	</div>
 </nav>

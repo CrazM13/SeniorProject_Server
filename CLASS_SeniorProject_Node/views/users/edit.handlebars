@@ -5,13 +5,13 @@
 			<div class="col-2">
 				<div class="card" style="width: 128px; height: 128px;">
 					<img id="profile_preview" src="{{profile}}" class="mw-100" alt="Profile Image" />
-					<input type="text" id="profile_data" name="profile_data" class="d-none" />
+					<input type="text" value="{{profile}}" id="profile_data" name="profile_data" class="d-none" />
 				</div>
 				<input type="file" id="profile_input" name="profile" accept="image/*">
 			</div>
 			<div class="col-10">
 				<div class="container" style="height: 128px;">
-					<h2><input type="text" name="username" style="font-size: 300%;" placeholder="{{name}}" value="{{name}}" /></h2>
+					<h2><input type="text" id="username_input" name="username" style="font-size: 300%;" placeholder="{{name}}" value="{{name}}" /></h2>
 				</div>
 			</div>
 		</div>
@@ -40,6 +40,7 @@
 					<div class="card-body">
 						<div>
 							<h3><b>Deaths --</b> {{deathCount}}</h3>
+							<h3><b>Current Level --</b> {{levels.length}}</h3>
 						</div>
 					</div>
 				</div>
@@ -47,11 +48,16 @@
 		</div>
 	</div>
 	<br />
-	<button type="submit" class="btn btn-warning">Save Changes</button>
+	<button type="submit" id="submit" class="btn btn-success">Save Changes</button>
 </form>
 
 <!-- Local Script -->
 <script>
+	const changesNone = "btn-success";
+	const changesPending = "btn-warning";
+	
+	var hasChanges = false;
+	
 	function readURL(input) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
@@ -66,5 +72,20 @@
 		}
 	}
 	
-	$("#profile_input").change(() => { readURL($("#profile_input")[0]); });
+	function updateChangeMarker(inHasChanges) {
+		hasChanges = inHasChanges;
+		
+		$('#submit').removeClass(hasChanges ? changesNone : changesPending);
+		$('#submit').addClass(!hasChanges ? changesNone : changesPending);
+		$('#submit').prop('disabled', !hasChanges);
+	}
+	
+	updateChangeMarker(false);
+	
+	$('#profile_input').change(() => { readURL($("#profile_input")[0]); updateChangeMarker(true); });
+	$('#username_input').change(() => { updateChangeMarker(true); });
+	
+	$(window).on('beforeunload', function () {
+		if (hasChanges) return 'There are unsaved changes. Continue?';
+	});
 </script>
