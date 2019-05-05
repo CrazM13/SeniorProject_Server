@@ -1,0 +1,36 @@
+<form action="/runs/invalidate/{{user}}/{{levelNum}}" method="POST">
+	<div class="card">
+		<div class="card-header">
+			<h2>Invalidate Run</h2>
+		</div>
+		
+		<div class="card-body">
+			<h3>Reason For Invalidation</h3>
+			<select name="reason" id="reason">
+				{{#each options}}
+					<option value="{{@index}}">{{this}}</option>
+				{{else}}
+				{{/each}}
+				<option value="other">Other</option>
+			</select>
+			<div id="other_reason" class="border">
+				<textarea name="other_reason" class="w-100"></textarea>
+				<small>This Field Can Accept HTML</small>
+			</div>
+		</div>
+	</div>
+	
+	<button type="submit">Submit</button>
+</form>
+
+<!-- Local Scripts -->
+<script>
+	$('#other_reason').hide();
+	$('#reason').change(() => {
+		if ($('#reason').val() != 'other') {
+			$('#other_reason').hide();
+		} else {
+			$('#other_reason').show();
+		}
+	});
+</script>

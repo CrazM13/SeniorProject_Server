@@ -10,6 +10,9 @@ const helpers = require('../../helpers/HelperMethods');
 require('../../models/users');
 var User = mongoose.model('Users');
 
+require('../../models/notifications');
+var Notification = mongoose.model('Notifications');
+
 // Routes
 router.get('/login', (req, res) => {
 	res.render('users/login');
@@ -56,6 +59,12 @@ router.get('/edit/:user', (req, res) => {
 		userData.levels = levelsData;
 
 		res.render('users/edit', userData);
+	});
+});
+
+router.get('/notifications/:user', (req, res) => {
+	Notification.find({recipient: req.params.user}).then((notifications) => {
+		res.render('users/notifications', {notifications: notifications});
 	});
 });
 
@@ -141,6 +150,31 @@ router.post('/edit/:user', (req, res) => {
 		user.save().then((savedUser) => {
 			res.redirect('/users/edit/' + savedUser.name);
 		});
+	});
+});
+
+router.post('/notifications/markread/:id', (req, res) => {
+	Notification.findOne({ id: req.body.id }).then((notification) => {
+		notification.unread = false;
+		notification.save().then(() => {
+			res.redirect('/users/notifications/' + req.user.name);
+		});
+	});
+});
+
+router.post('/notifications/markunread/:id', (req, res) => {
+	Notification.findOne({ id: req.body.id }).then((notification) => {
+		notification.unread = true;
+		notification.save().then(() => {
+			res.redirect('/users/notifications/' + req.user.name);
+		});
+	});
+});
+
+
+router.post('/notifications/delete/:id', (req, res) => {
+	Notification.remove({ id: req.body.id }).then(() => {
+		res.redirect('/users/notifications/' + req.user.name);
 	});
 });
 

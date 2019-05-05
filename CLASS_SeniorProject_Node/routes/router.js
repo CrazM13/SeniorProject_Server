@@ -29,6 +29,7 @@ router.get('/leaderboard', (req, res) => {
 });
 
 router.use('/users', require('./users/router'));
+router.use('/runs', require('./runs/router'));
 
 async function getLeaderboardData(level) {
     leaderboard.levels[level] = {};

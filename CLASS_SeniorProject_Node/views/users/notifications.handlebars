@@ -1,0 +1,34 @@
+<div class="card">
+	<div class="card-header">
+		<h2>Notifications <span class="badge badge-primary">{{notifications.length}}</span></h2>
+	</div>
+	<div class="card-body">
+		{{#each notifications}}
+			<button onclick="markRead({{id}})" class="btn btn-dark" type="button" data-toggle="collapse" data-target="#notification_{{id}}" aria-expanded="false" aria-controls="notification_{{id}}">
+				{{#if unread}}<span class="badge badge-pill badge-primary"> </span>{{/if}}   {{sender}}: {{preview message}}
+			</button>
+			<div class="collapse" id="notification_{{id}}">
+				<div class="card card-body">
+					<p>From: {{Sender}}</p>
+					<p>{{message}}</p>
+					
+					{{#if unread}}
+						<form action="/users/notifications/markread/{{id}}" method="POST">
+							<button class="btn btn-primary">Mark Read</button>
+						</form>
+					{{else}}
+						<form action="/users/notifications/markunread/{{id}}" method="POST">
+							<button class="btn btn-primary">Mark Unread</button>
+						</form>
+					{{/if}}
+					<form action="/users/notifications/delete/{{id}}" method="POST">
+						<button class="btn btn-danger">Delete</button>
+					</form>
+				</div>
+			</div>
+			<br />
+		{{else}}
+			<h3>No Notifications!</h3>
+		{{/each}}
+	</div>
+</div>

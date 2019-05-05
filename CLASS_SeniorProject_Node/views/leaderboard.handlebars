@@ -33,7 +33,7 @@
 									<h3>{{add @index 1}} - <a href="/users/display/{{name}}">{{name}}</a>: {{time}}</h3>
 								</div>
 								{{#if ../../user.admin}}
-									<form action="/users/invalidate/{{name}}/{{@../index}}/" class="col-2">
+									<form action="/runs/invalidate/{{name}}/{{@../index}}/" class="col-2">
 										<button class="btn-ban" type="submit"  data-toggle="tooltip" data-placement="top" title="Invalidate Run"></button>
 									</form>
 								{{/if}}

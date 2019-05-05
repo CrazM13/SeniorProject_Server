@@ -28,6 +28,9 @@
 		<ul class="navbar-nav ml-auto">
 			{{#if user}}
 			<li class="nav-item">
+				<a class="nav-link" href="/users/notifications/{{user.name}}">Notifications</a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link" href="/users/logout">Log Out</a>
 			</li>
 			{{else}}

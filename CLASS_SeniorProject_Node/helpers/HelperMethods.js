@@ -23,5 +23,8 @@ module.exports = {
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
         });
+    },
+    deepCloneJSON: function (json) {
+        return JSON.parse(JSON.stringify(json));
     }
 };
