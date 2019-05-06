@@ -34,7 +34,7 @@ router.use('/runs', require('./runs/router'));
 async function getLeaderboardData(level) {
     leaderboard.levels[level] = {};
 
-	return User.find({'levels.': { $ne: null }}).sort('-levels[' + level + ']').then((users) => {
+	return User.find({'levels.': { $ne: null }}).then((users) => {
         leaderboard.levels[level].users = [];
         var index = 0;
 		for (var i = 0; i < users.length; i++) {
@@ -43,11 +43,16 @@ async function getLeaderboardData(level) {
 
                 leaderboard.levels[level].users[index].name = users[i].name;
                 leaderboard.levels[level].users[index].time = helpers.formatTime(users[i].levels[level]);
+                leaderboard.levels[level].users[index].timeVal = users[i].levels[level];
 
                 index++;
             }
-		}
-	});
+        }
+
+        leaderboard.levels[level].users.sort((a, b) => {
+            return parseFloat(a.timeVal) - parseFloat(b.timeVal);
+        });
+    });
 }
 
 module.exports = router;
