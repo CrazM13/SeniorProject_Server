@@ -57,6 +57,7 @@
 	const changesPending = "btn-warning";
 	
 	var hasChanges = false;
+	var shouldStop = true;
 	
 	function readURL(input) {
 		if (input.files && input.files[0]) {
@@ -84,8 +85,10 @@
 	
 	$('#profile_input').change(() => { readURL($("#profile_input")[0]); updateChangeMarker(true); });
 	$('#username_input').change(() => { updateChangeMarker(true); });
+
+	$('#submit').click(() => { shouldStop = false; });
 	
 	$(window).on('beforeunload', function () {
-		if (hasChanges) return 'There are unsaved changes. Continue?';
+		if (hasChanges && shouldStop) return 'There are unsaved changes. Continue?';
 	});
 </script>
