@@ -114,12 +114,17 @@ io.on('connection', (socket) => {
 		console.log("updateBestTime", JSON.stringify(data, null, 4));
 		
 		User.findOne({ name: data.user }).then((user) => {
-			if (user.levels.length > data.level) user.levels[data.level] = data.time;
-			else {
+			console.log(user.levels.length);
+			if (user.levels.length > data.level) {
+				user.levels[data.level] = data.time;
+				user.markModified('levels');
+				console.log("Set", data.time, "to", data.level, user.levels[data.level]);
+			} else {
 				for (var i = user.levels.length; i < data.level; i++) {
 					user.levels.push(-1);
 				}
 				user.levels.push(data.time);
+				console.log("Set", data.time, "to", data.level, "Long way");
 			}
 
 			user.save();

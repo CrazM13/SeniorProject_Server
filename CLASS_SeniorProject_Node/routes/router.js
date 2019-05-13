@@ -10,13 +10,14 @@ const helpers = require('../helpers/HelperMethods');
 require('../models/users');
 var User = mongoose.model('Users');
 
-var leaderboard = {levels:[]};
+var leaderboard;
 
 router.get('/', (req, res) => {
 	res.render('index');
 });
 
 router.get('/leaderboard', (req, res) => {
+    leaderboard = {levels:[]};
     var promises = [];
 
     for (var i = 0; i < 10; i++) {

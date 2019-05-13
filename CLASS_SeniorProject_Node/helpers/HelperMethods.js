@@ -6,10 +6,10 @@ module.exports = {
         if (timeFloat < 0) return "--:--.--";
         if (timeFloat > 594000) return "\u221e";
     
-        timeFloat = Math.round(timeFloat * 100);
+        timeFloat = Math.floor(timeFloat * 100);
     
-        var sec = Math.round(timeFloat / 100);
-        var min = Math.round(sec / 60);
+        var sec = Math.floor(timeFloat / 100);
+        var min = Math.floor(sec / 60);
         sec %= 60;
         var dec = timeFloat % 100;
     
