@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const io = require('socket.io')(process.env.PORT || 5000);
+const ioRequire = require('socket.io');
 const db = require('./config/database');
 
 const bodyParser = require('body-parser');
@@ -14,6 +14,8 @@ const favicon = require('serve-favicon');
 const helpers = require('./helpers/HelperMethods');
 
 const app = express();
+const server = require('http').createServer(app);
+const io = ioRequire.listen(server);
 const port = process.env.PORT || 1222;
 
 // Templating Engine
@@ -240,6 +242,6 @@ app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use('/', require('./routes/router'));
 
-app.listen(port, () => {
+server.listen(port, () => {
 	console.log("Server is running on port " + port.toString());
 });
